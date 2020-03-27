@@ -1,38 +1,43 @@
 package edu.whccd.dramirez;
 
+import java.time.Year;
 import java.util.Scanner;
-
+/*
+the purpose of this application is to replicate the code in figure 2-17 chapter 2
+author: Delrio Ramirez
+ */
 public class Main {
-
     public static void main(String[] args) {
-        System.out.println(
-                "Please enter test scores that range from 0 to 100.");
-        System.out.println("To end the program enter 999.");
-        System.out.println(); // print a blank line
-        // initialize variables and create a Scanner object
-        double scoreTotal = 0.0;
-        int scoreCount = 0;
-        int testScore = 0;
+        System.out.println("Welcome to the Invoice Total calculaotr");
+        System.out.println();
+
         Scanner sc = new Scanner(System.in);
-        // get a series of test scores from the user
-        while (testScore <= 100)
-        {
-            // get the input from the user
-            System.out.print("Enter score: ");
-            testScore = sc.nextInt();
-            // accumulate score count and score total
-            if (testScore <= 100)
-            {
-                scoreCount = scoreCount + 1;
-                scoreTotal = scoreTotal + testScore;
+        String choice = "y";
+        while (choice.equalsIgnoreCase("y")) {
+            System.out.print("enter Subtotal: ");
+            double subtotal = sc.nextDouble();
+
+            double discountPercent;
+            if (subtotal >= 200) {
+                discountPercent = .2;
+            } else if (subtotal >= 100) {
+                discountPercent = .1;
+            } else {
+                discountPercent = 0.0;
             }
+
+            double discountAmount = subtotal * discountPercent;
+            double total = subtotal - discountAmount;
+
+            String message = "Discount percent:" + discountPercent + "\n"
+             + "Discount amount: " + discountAmount + "\n"
+                    + "Invoice total: " + total + "\n";
+            System.out.println(message);
+
+            System.out.print("continue? y/n: ");
+            choice = sc.next();
+            System.out.println();
         }
-        // display the score count, score total, and average score
-        double averageScore = scoreTotal / scoreCount;
-        String message = "\n"
-                + "Score count: " + scoreCount + "\n"
-                + "Score total: " + scoreTotal + "\n"
-                + "Average score: " + averageScore + "\n";
-        System.out.println(message);
+
     }
 }
