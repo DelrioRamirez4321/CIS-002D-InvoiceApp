@@ -2,41 +2,45 @@ package edu.whccd.dramirez;
 
 import java.util.Scanner;
 import java.text.NumberFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /*
-the purpose of this application is to replicate the code in figure 3-13 chapter 3
+the purpose of this application is to replicate the code in figure 3-17 chapter 3
 author: Delrio Ramirez
  */
 public class Main {
     public static void main(String[] args) {
-       final double SALES_TAX_PCT = 0.5;
+       final BigDecimal SALES_TAX_PCT = new BigDecimal("0.5");
 
        Scanner sc = new Scanner(System.in);
        String choice = "y";
        while (choice.equalsIgnoreCase("y")) {
            System.out.print("Enter subtotal: ");
-           double subtotal = sc.nextDouble();
+           String subtotalString = sc.next();
 
-           double discountPercent = 0.0;
-           if (subtotal >= 100) {
-               discountPercent = 0.1;
-
+           BigDecimal subtotal = new BigDecimal(subtotalString);
+           BigDecimal discountPercent;
+           if (subtotal.doubleValue() >= 100 ){
+               discountPercent = new BigDecimal("0.1");
            } else {
-               discountPercent = 0.0;
+               discountPercent = new BigDecimal("0.0");
            }
 
-           double discountAmount = subtotal * discountPercent;
-           double totalBeforeTax = subtotal - discountAmount;
-           double saleTax = totalBeforeTax * SALES_TAX_PCT;
-           double total = totalBeforeTax + saleTax;
+           BigDecimal discountAmount = subtotal.multiply(discountPercent)
+                   .setScale(2, RoundingMode.HALF_UP);
+           BigDecimal totalBeforeTax = subtotal.subtract(discountAmount);
+           BigDecimal saleTax = SALES_TAX_PCT.multiply(totalBeforeTax)
+                   .setScale(2, RoundingMode.HALF_UP);
+           BigDecimal total = totalBeforeTax.add(saleTax);
 
            NumberFormat currency = NumberFormat.getCurrencyInstance();
            NumberFormat percent = NumberFormat.getPercentInstance();
            String message =
                    "Discount Percent:  " + percent.format(discountPercent) + "\n"
                            + "Discount amount: " + currency.format(discountAmount) + "\n"
-                           + "Total before tax" + currency.format(totalBeforeTax) + "\n"
-                           + "Sales tax" + currency.format(saleTax) + "\n"
+                           + "Total before tax: " + currency.format(totalBeforeTax) + "\n"
+                           + "Sales tax: " + currency.format(saleTax) + "\n"
                            + "Invoice total: " + currency.format(total) + "\n";
            System.out.println(message);
 
