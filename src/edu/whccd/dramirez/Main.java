@@ -1,43 +1,48 @@
 package edu.whccd.dramirez;
 
-import java.time.Year;
 import java.util.Scanner;
+import java.text.NumberFormat;
+
 /*
-the purpose of this application is to replicate the code in figure 2-17 chapter 2
+the purpose of this application is to replicate the code in figure 3-13 chapter 3
 author: Delrio Ramirez
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to the Invoice Total calculaotr");
-        System.out.println();
+       final double SALES_TAX_PCT = 0.5;
 
-        Scanner sc = new Scanner(System.in);
-        String choice = "y";
-        while (choice.equalsIgnoreCase("y")) {
-            System.out.print("enter Subtotal: ");
-            double subtotal = sc.nextDouble();
+       Scanner sc = new Scanner(System.in);
+       String choice = "y";
+       while (choice.equalsIgnoreCase("y")) {
+           System.out.print("Enter subtotal: ");
+           double subtotal = sc.nextDouble();
 
-            double discountPercent;
-            if (subtotal >= 200) {
-                discountPercent = .2;
-            } else if (subtotal >= 100) {
-                discountPercent = .1;
-            } else {
-                discountPercent = 0.0;
-            }
+           double discountPercent = 0.0;
+           if (subtotal >= 100) {
+               discountPercent = 0.1;
 
-            double discountAmount = subtotal * discountPercent;
-            double total = subtotal - discountAmount;
+           } else {
+               discountPercent = 0.0;
+           }
 
-            String message = "Discount percent:" + discountPercent + "\n"
-             + "Discount amount: " + discountAmount + "\n"
-                    + "Invoice total: " + total + "\n";
-            System.out.println(message);
+           double discountAmount = subtotal * discountPercent;
+           double totalBeforeTax = subtotal - discountAmount;
+           double saleTax = totalBeforeTax * SALES_TAX_PCT;
+           double total = totalBeforeTax + saleTax;
 
-            System.out.print("continue? y/n: ");
-            choice = sc.next();
-            System.out.println();
-        }
+           NumberFormat currency = NumberFormat.getCurrencyInstance();
+           NumberFormat percent = NumberFormat.getPercentInstance();
+           String message =
+                   "Discount Percent:  " + percent.format(discountPercent) + "\n"
+                           + "Discount amount: " + currency.format(discountAmount) + "\n"
+                           + "Total before tax" + currency.format(totalBeforeTax) + "\n"
+                           + "Sales tax" + currency.format(saleTax) + "\n"
+                           + "Invoice total: " + currency.format(total) + "\n";
+           System.out.println(message);
 
+           System.out.print("Continue (y/n): ");
+           choice = sc.next();
+           System.out.println();
+       }
     }
 }
