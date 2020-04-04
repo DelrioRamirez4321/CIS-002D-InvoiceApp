@@ -11,7 +11,7 @@ author: Delrio Ramirez
  */
 public class Main {
     public static void main(String[] args) {
-       final BigDecimal SALES_TAX_PCT = new BigDecimal("0.5");
+       final BigDecimal SALES_TAX_PCT = new BigDecimal("0.05");
 
        Scanner sc = new Scanner(System.in);
        String choice = "y";
